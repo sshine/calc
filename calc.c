@@ -52,6 +52,7 @@ void lex(struct stack_t *stack, char *line, int max, int base)
 {
   int i = 0;
   char *num_start = NULL;
+  // int decimal_sep = 0; // FIXME: No support for floating-point numbers yet.
   char tmp;
   mpz_t *num;
 
@@ -62,6 +63,18 @@ void lex(struct stack_t *stack, char *line, int max, int base)
       if (num_start == NULL) {
         num_start = line + i;
       }
+      // FIXME: No support for floating-point numbers yet.
+      /*
+    } else if (line[i] == '.') {
+      // In case we hit a decimal point...
+      if (decimal_sep == 0)
+        decimal_sep = 1;
+      else {
+        fprintf(stderr, "Lexer error: Cannot have more than "
+                        "one decimal separator per number.");
+        exit(1);
+      }
+      */
     } else {
       // In case we're ending a number...
       if (num_start != NULL) {
@@ -78,6 +91,7 @@ void lex(struct stack_t *stack, char *line, int max, int base)
         line[i] = tmp;
         num = NULL;
         num_start = NULL;
+        decimal_sep = 0;
       }
 
       // In any other case...
